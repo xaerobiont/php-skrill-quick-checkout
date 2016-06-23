@@ -1,8 +1,8 @@
 # PHP5 package for Skrill QuickCheckout interface
 
-[![Latest Stable Version]()](https://packagist.org/packages/bupy7/yii2-page)
-[![Total Downloads]()](https://packagist.org/packages/bupy7/yii2-pages)
-[![License]()](https://packagist.org/packages/bupy7/yii2-pages)
+[![Latest Stable Version](https://poser.pugx.org/zvook/php-skrill-quick-checkout/v/stable)](https://packagist.org/packages/zvook/php-skrill-quick-checkout)
+[![Total Downloads](https://poser.pugx.org/zvook/php-skrill-quick-checkout/downloads)](https://packagist.org/packages/zvook/php-skrill-quick-checkout)
+[![License](https://poser.pugx.org/zvook/php-skrill-quick-checkout/license)](https://packagist.org/packages/zvook/php-skrill-quick-checkout)
 
 UNDER DEVELOPMENT
 -----------------
