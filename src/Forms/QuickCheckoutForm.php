@@ -14,7 +14,7 @@ class QuickCheckoutForm
      * Skrill payment URL
      * @var string
      */
-    protected $action = 'https://pay.skrill.com';
+    protected $action = 'http://www.moneybookers.com/app/payment.pl';
 
     /**
      * HTML form target
