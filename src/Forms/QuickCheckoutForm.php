@@ -117,12 +117,12 @@ class QuickCheckoutForm
     {
         $fields = $this->model->asArray();
         $form = sprintf(
-            '<form action="%s" method="POST" target="%s" class="%s">',
+            '<form action="%s" method="post" target="%s" class="%s">',
             $this->action, $this->target, $this->formClass
         );
         foreach ($fields as $name => $value) {
             if (array_key_exists($name, $this->visibleFields)) {
-                $form .= sprintf('<label for="%s">%s</label>', $this->visibleFields[$name]);
+                $form .= sprintf('<label for="%s">%s</label>', $name, $this->visibleFields[$name]);
                 $form .= sprintf(
                     '<input type="text" class="%s" id="%s" name="%s" value="%s">',
                     $name, $name, $name, $value

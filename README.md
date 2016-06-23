@@ -83,8 +83,8 @@ try {
     # something bad in request
 }
 
-if ($response->verifySignature() && $response->isProcessed()) {
-    # bingo!
+if ($response->verifySignature('your Skrill secret word') && $response->isProcessed()) {
+    # bingo! You need to return anything with 200 OK code! Otherwise, Skrill will retry request
 }
 
 # Or:
