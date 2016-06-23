@@ -131,6 +131,7 @@ class QuickCheckoutForm
             $form .= sprintf('<input type="hidden" name="%s" value="%s">', $name, $value);
         }
         $form .= sprintf('<input type="submit" value="%s">', $this->submitText);
+        $form .= '</form>';
 
         return $form;
     }

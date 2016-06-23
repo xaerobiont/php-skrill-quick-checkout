@@ -101,7 +101,7 @@ class QuickCheckout extends Model
      * @default 1
      * @max-length 1
      */
-    protected $return_url_target = self::URL_TARGET_TOP;
+    protected $return_url_target;
 
     /**
      * URL to which the customer is returned if the payment is cancelled or fails.
@@ -121,7 +121,7 @@ class QuickCheckout extends Model
      * @default 1
      * @max-length 1
      */
-    protected $cancel_url_target = self::URL_TARGET_TOP;
+    protected $cancel_url_target;
 
     /**
      * URL to which the transaction details are posted after the payment process is complete.
@@ -153,7 +153,7 @@ class QuickCheckout extends Model
      * @default EN
      * @max-length 2
      */
-    protected $language = 'EN';
+    protected $language;
 
     /**
      * The URL of the logo which you would like to appear in the top right of the Skrill page.
@@ -181,7 +181,7 @@ class QuickCheckout extends Model
      * @max-length 1
      * @see https://www.skrill.com/fileadmin/content/pdf/Skrill_Quick_Checkout_Guide.pdf#G4.1034905
      */
-    protected $prepare_only = 0;
+    protected $prepare_only;
 
     /**
      * When a customer pays through Skrill, Skrill submits a preconfigured descriptor with the transaction,
