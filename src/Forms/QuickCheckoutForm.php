@@ -23,25 +23,6 @@ class QuickCheckoutForm
     protected $target = '_blank';
 
     /**
-     * @var string
-     */
-    protected $formClass = 'skrill-payment-form';
-
-    /**
-     * Text over the submit button
-     * @var string
-     */
-    protected $submitText = 'Pay';
-
-    /**
-     * Array of visible HTML inputs with labels
-     * The name of field will be also rendered as input "class" attribute
-     * Structure: ['field_name' => 'label']
-     * @var array
-     */
-    protected $visibleFields = [];
-
-    /**
      * @var QuickCheckout
      */
     private $model;
@@ -55,84 +36,74 @@ class QuickCheckoutForm
     }
 
     /**
-     * @param string $action
-     * @return $this
-     */
-    public function setAction($action)
-    {
-        $this->action = $action;
-
-        return $this;
-    }
-
-    /**
-     * @param string $target
-     * @return $this
-     */
-    public function setTarget($target)
-    {
-        $this->target = $target;
-
-        return $this;
-    }
-
-    /**
-     * @param string $submitText
-     * @return $this
-     */
-    public function setSubmitText($submitText)
-    {
-        $this->submitText = $submitText;
-
-        return $this;
-    }
-
-    /**
-     * @param array $visibleFields
-     * @return $this
-     */
-    public function setVisibleFields($visibleFields)
-    {
-        $this->visibleFields = $visibleFields;
-
-        return $this;
-    }
-
-    /**
-     * @param mixed $formClass
-     * @return $this
-     */
-    public function setFormClass($formClass)
-    {
-        $this->formClass = $formClass;
-
-        return $this;
-    }
-
-    /**
-     * Returns HTML form code
+     * @param array $htmlOptions
      * @return string
      */
-    public function render()
+    public function open($htmlOptions = [])
     {
-        $fields = $this->model->asArray();
-        $form = sprintf(
-            '<form action="%s" method="post" target="%s" class="%s">',
-            $this->action, $this->target, $this->formClass
-        );
-        foreach ($fields as $name => $value) {
-            if (array_key_exists($name, $this->visibleFields)) {
-                $form .= sprintf('<label for="%s">%s</label>', $name, $this->visibleFields[$name]);
-                $form .= sprintf(
-                    '<input type="text" class="%s" id="%s" name="%s" value="%s">',
-                    $name, $name, $name, $value
-                );
-            }
-            $form .= sprintf('<input type="hidden" name="%s" value="%s">', $name, $value);
+        $action = $this->action;
+        if (isset($htmlOptions['action'])) {
+            $action = $htmlOptions['action'];
+            unset($htmlOptions['action']);
         }
-        $form .= sprintf('<input type="submit" value="%s">', $this->submitText);
-        $form .= '</form>';
+        $target = $this->target;
+        if (isset($htmlOptions['target'])) {
+            $target = $htmlOptions['target'];
+            unset($htmlOptions['target']);
+        }
+
+        $form = sprintf('<form %s %s', $action, $target);
+        if (!empty($htmlOptions)) {
+            foreach ($htmlOptions as $opName => $opValue) {
+                $form .= sprintf(' %s="%s"', $opName, $opValue);
+            }
+        }
+        $form .= '>';
 
         return $form;
+    }
+
+    /**
+     * @param array $exclude
+     * @return string
+     */
+    public function renderHidden($exclude = [])
+    {
+        $fields = $this->model->asArray();
+        $html = '';
+        foreach ($fields as $name => $value) {
+            if (in_array($name, $exclude)) {
+                continue;
+            }
+            $html .= sprintf('<input type="hidden" name="%s" value="%s">', $name, $value);
+        }
+
+        return $html;
+    }
+
+    /**
+     * @param $text
+     * @param array $htmlOptions
+     * @return string
+     */
+    public function renderSubmit($text, $htmlOptions = [])
+    {
+        $submit = sprintf('<input type="submit" value="%s"', $text);
+        if (!empty($htmlOptions)) {
+            foreach ($htmlOptions as $opName => $opValue) {
+                $submit .= sprintf(' %s="%s"', $opName, $opValue);
+            }
+        }
+        $submit .= '>';
+
+        return $submit;
+    }
+
+    /**
+     * @return string
+     */
+    public function close()
+    {
+        return '</form>';
     }
 }

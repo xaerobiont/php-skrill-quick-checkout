@@ -19,11 +19,6 @@ class QuickCheckout extends Model
     const URL_TARGET_BLANK = 4;
 
     /**
-     * @var string
-     */
-    public $url = 'https://pay.skrill.com';
-
-    /**
      * Email address of your Skrill merchant account.
      *
      * @var string

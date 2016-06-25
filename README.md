@@ -56,22 +56,23 @@ Build and render form
 use zvook\Skrill\Models\QuickCheckoutForm;
 
 $form = new QuickCheckoutForm($quickCheckout);
-$form->setFormClass('my-super-form-class');
-$form->setSubmitText('Pay');
-/*
-By default all fields will rendered as hidden inputs
-Use attribute names from QuickCheckout model as a field name
-*/
-$form->setVisibleFields([
-    'amount' => 'label for amount field',
-    'firstname' => 'label for firstname'
-]);
-// .....
 
-echo $form->render();
+echo $form->open([
+    'class' => 'skrill-form'
+]);
+
+/*
+By default all fields will be rendered as hidden inputs
+If you need to render some field as visible (i.e. amount of payment) you should specify it in $exclude
+Excluded fields will not be rendered at all - you should render them by yourself
+/*
+$exclude = ['amount'];
+echo $form->renderHidden($exclude);
+<input type="text" name="amount"> .....
+echo $form->close();
 ```
 
-In you status_url listener:
+In your status_url listener:
 
 ```php
 use zvook\Skrill\Models\SkrillStatusResponse;
