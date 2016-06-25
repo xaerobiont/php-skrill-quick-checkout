@@ -65,7 +65,7 @@ echo $form->open([
 By default all fields will be rendered as hidden inputs
 If you need to render some field as visible (i.e. amount of payment) you should specify it in $exclude
 Excluded fields will not be rendered at all - you should render them by yourself
-/*
+*/
 $exclude = ['amount'];
 echo $form->renderHidden($exclude);
 <input type="text" name="amount"> .....
