@@ -69,6 +69,7 @@ Excluded fields will not be rendered at all - you should render them by yourself
 $exclude = ['amount'];
 echo $form->renderHidden($exclude);
 <input type="text" name="amount"> .....
+echo $form->renderSubmit('Pay', ['class' => 'btn']);
 echo $form->close();
 ```
 

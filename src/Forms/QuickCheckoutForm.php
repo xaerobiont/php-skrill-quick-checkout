@@ -52,7 +52,7 @@ class QuickCheckoutForm
             unset($htmlOptions['target']);
         }
 
-        $form = sprintf('<form %s %s', $action, $target);
+        $form = sprintf('<form action="%s" target="%s"', $action, $target);
         if (!empty($htmlOptions)) {
             foreach ($htmlOptions as $opName => $opValue) {
                 $form .= sprintf(' %s="%s"', $opName, $opValue);
