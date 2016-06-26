@@ -80,7 +80,7 @@ use zvook\Skrill\Models\SkrillStatusResponse;
 use zvook\Skrill\Components\SkrillException;
 
 try {
-    $response = new SkrillStatusResponse($_POST);
+    $response = new SkrillStatusResponse($_POST, true);
 } catch (SkrillException $e) {
     # something bad in request
 }
