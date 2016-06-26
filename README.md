@@ -80,10 +80,16 @@ use zvook\Skrill\Models\SkrillStatusResponse;
 use zvook\Skrill\Components\SkrillException;
 
 try {
-    $response = new SkrillStatusResponse($_POST, true);
+    $response = new SkrillStatusResponse($_POST);
 } catch (SkrillException $e) {
     # something bad in request
 }
+
+/*
+SkrillStatusResponse model contains attributes only for required Skrill response parameters
+To get all of them use:
+*/
+$allParams = $response->getRaw();
 
 if ($response->verifySignature('your Skrill secret word') && $response->isProcessed()) {
     # bingo! You need to return anything with 200 OK code! Otherwise, Skrill will retry request
