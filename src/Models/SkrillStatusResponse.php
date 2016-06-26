@@ -312,7 +312,7 @@ class SkrillStatusResponse extends Model
     public function log($targetPath)
     {
         $log = date('d M y H:i:s', time());
-        $log .= '| ' . json_encode($this->asArray()) . "\n\n";
+        $log .= '| ' . json_encode($this->getRaw()) . "\n\n";
 
         return file_put_contents($targetPath, $log, FILE_APPEND);
     }
