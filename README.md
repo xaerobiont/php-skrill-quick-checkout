@@ -4,9 +4,6 @@
 [![Total Downloads](https://poser.pugx.org/zvook/php-skrill-quick-checkout/downloads)](https://packagist.org/packages/zvook/php-skrill-quick-checkout)
 [![License](https://poser.pugx.org/zvook/php-skrill-quick-checkout/license)](https://packagist.org/packages/zvook/php-skrill-quick-checkout)
 
-UNDER DEVELOPMENT
------------------
-
 Simple and useful PHP5 library to make payments via Skrill QuickCheckout interface
 
 Containing:
