@@ -15,6 +15,7 @@ class SkrillStatusResponse extends Model
     const STATUS_FAILED = -2;
     const STATUS_PENDING = 0;
     const STATUS_CANCELED = -1;
+    const STATUS_CHARGEBACK = -3;
 
     use AsArrayTrait;
 
@@ -85,7 +86,7 @@ class SkrillStatusResponse extends Model
     protected $mb_currency;
 
     /**
-     * Status of the transaction:
+     * Status of the transaction
      *
      * @var int
      * @required true
@@ -154,6 +155,27 @@ class SkrillStatusResponse extends Model
      * @required false
      */
     protected $merchant_fields = null;
+
+    /**
+     * @var string
+     * @required false
+     * @see https://www.skrill.com/fileadmin/content/pdf/Skrill_Quick_Checkout_Guide.pdf#G4.1035971
+     */
+    protected $payment_instrument_country = null;
+
+    /**
+     * @var string
+     * @required false
+     * @see https://www.skrill.com/fileadmin/content/pdf/Skrill_Quick_Checkout_Guide.pdf#G4.1035971
+     */
+    protected $country = null;
+
+    /**
+     * @var string
+     * @required false
+     * @see https://www.skrill.com/fileadmin/content/pdf/Skrill_Quick_Checkout_Guide.pdf#G4.1035971
+     */
+    protected $IP_country = null;
 
     /**
      * @return string
@@ -284,6 +306,30 @@ class SkrillStatusResponse extends Model
     }
 
     /**
+     * @return string
+     */
+    public function getPaymentInstrumentCountry()
+    {
+        return $this->payment_instrument_country;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCountry()
+    {
+        return $this->country;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIPCountry()
+    {
+        return $this->IP_country;
+    }
+
+    /**
      * @return bool
      */
     public function isProcessed()
@@ -313,6 +359,14 @@ class SkrillStatusResponse extends Model
     public function isPending()
     {
         return $this->status == self::STATUS_PENDING;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isChargeBack()
+    {
+        return $this->status == self::STATUS_CHARGEBACK;
     }
 
     /**
