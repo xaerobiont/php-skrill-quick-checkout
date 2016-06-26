@@ -119,15 +119,6 @@ class SkrillStatusResponse extends Model
     protected $md5sig;
 
     /**
-     * SHA2 signature
-     *
-     * @var string
-     * @required true
-     * @see https://www.skrill.com/fileadmin/content/pdf/Skrill_Quick_Checkout_Guide.pdf#M10.9.75080.heading.2.64.SHA2.signature
-     */
-    protected $sha2sig;
-
-    /**
      * @param array $params
      * @throws SkrillException
      */
@@ -235,14 +226,6 @@ class SkrillStatusResponse extends Model
     public function getMd5sig()
     {
         return $this->md5sig;
-    }
-
-    /**
-     * @return string
-     */
-    public function getSha2sig()
-    {
-        return $this->sha2sig;
     }
 
     /**
