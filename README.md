@@ -111,3 +111,5 @@ if ($response->getPayToEmail() !== 'mymoneybank@mail.com') {
 
 - Based on Skrill API version - **7.4**
 - [Skrill QuickCheckout documentation](https://www.skrill.com/fileadmin/content/pdf/Skrill_Quick_Checkout_Guide.pdf)
+- Skrill test merchant email: **demoqco@sun-fish.com**
+- Skrill test card numbers: VISA: **4000001234567890** | MASTERCARD: **5438311234567890** | AMEX: **371234500012340**
