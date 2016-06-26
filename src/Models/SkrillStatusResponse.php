@@ -2,6 +2,8 @@
 
 namespace zvook\Skrill\Models;
 
+use zvook\Skrill\Components\AsArrayTrait;
+
 /**
  * @package zvook\Skrill\Models
  * @author Dmitry zvook Klyukin
@@ -13,6 +15,8 @@ class SkrillStatusResponse extends Model
     const STATUS_FAILED = -2;
     const STATUS_PENDING = 0;
     const STATUS_CANCELED = -1;
+
+    use AsArrayTrait;
 
     /**
      * Your email address.
@@ -319,15 +323,27 @@ class SkrillStatusResponse extends Model
      */
     public function verifySignature($secretWord)
     {
-        $digest = md5(implode('', [
+        $digest = strtoupper(md5(implode('', [
             $this->getMerchantId(),
             $this->getTransactionId(),
             strtoupper(md5($secretWord)),
             $this->getMbAmount(),
             $this->getMbCurrency(),
             $this->getStatus()
-        ]));
+        ])));
 
         return $digest == $this->getMd5sig();
+    }
+
+    /**
+     * @param $targetPath
+     * @return int
+     */
+    public function log($targetPath)
+    {
+        $log = "\n\n" . date('d M y H:i:s', time());
+        $log .= '| ' . json_encode($this->asArray());
+
+        return file_put_contents($targetPath, $log, FILE_APPEND);
     }
 }

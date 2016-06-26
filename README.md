@@ -105,6 +105,9 @@ For example:
 if ($response->getPayToEmail() !== 'mymoneybank@mail.com') {
     // hum, it's very strange ...
 }
+
+/* Also you can log Skrill response data using simple built-in logger */
+$response->log('/path/to/writable/file');
 ```
 
 ### Information
