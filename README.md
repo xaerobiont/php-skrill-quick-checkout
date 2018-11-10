@@ -50,7 +50,7 @@ $quickCheckout->setReturnUrlTarget(QuickCheckout::URL_TARGET_BLANK);
 Build and render form
 
 ```php
-use zvook\Skrill\Models\QuickCheckoutForm;
+use zvook\Skrill\Forms\QuickCheckoutForm;
 
 $form = new QuickCheckoutForm($quickCheckout);
 
