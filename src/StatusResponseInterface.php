@@ -14,19 +14,13 @@ interface StatusResponseInterface
 
     public function getTransactionId(): mixed;
 
-    public function getMbTransactionId(): mixed;
-
-    public function getMbAmount(): int|float;
+    public function getMbAmount(): mixed;
 
     public function getMbCurrency(): string;
 
     public function getStatus(): int;
 
     public function getMd5sig(): string;
-
-    public function getAmount(): int|float;
-
-    public function getCurrency(): string;
 
     public function verifySignature(string $secretWord): bool;
 }

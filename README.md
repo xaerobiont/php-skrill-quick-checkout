@@ -8,7 +8,7 @@
 ```json
 {
   "require": {
-    "xaerobiont/php-skrill-quick-checkout": "^2"
+    "zvook/php-skrill-quick-checkout": "^2"
   }
 }
 ```
@@ -41,13 +41,17 @@ In your status listener
 use Xaerobiont\Skrill\StatusResponse;
 use Xaerobiont\Skrill\SkrillException;
 
-$response = new StatusResponse($_POST, skipUndefined: true);
+$data = $_POST;
+$response = new StatusResponse($data, skipUndefined: true);
 
-if (!$response->verifySignature('your Skrill secret word') || $response->getPayToEmail() !== 'mymoneybank@mail.com') {
-    # hm, angry hacker?
+if (
+    !$response->verifySignature('your Skrill secret word') || 
+    $response->getPayToEmail() !== 'mymoneybank@mail.com'
+) {
+    // hm, angry hacker?
 }
 
-switch ($response->getStatus()) {
+switch ((int)$response->getStatus()) {
     case StatusResponse::STATUS_PROCESSED:
         // Payment is done. You need to return anything with 200 http code, otherwise, Skrill will retry request
         break;
@@ -58,7 +62,10 @@ switch ($response->getStatus()) {
         break;
     case StatusResponse::STATUS_FAILED:
         // Note that you should enable receiving failure code in Skrill account
-        $errorCode = $response->getFailedReasonCode();
+        $errorCode = $data['failed_reason_code'];
+        
+// Note that StatusResponse contains parameters required for signature validation only.
+// Check $_POST to find all of them
 }
 ```
 
