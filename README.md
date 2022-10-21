@@ -1,121 +1,70 @@
-# PHP5 package for Skrill QuickCheckout interface
+# PHP package for Skrill QuickCheckout interface
 
 [![Latest Stable Version](https://poser.pugx.org/zvook/php-skrill-quick-checkout/v/stable)](https://packagist.org/packages/zvook/php-skrill-quick-checkout)
 [![Total Downloads](https://poser.pugx.org/zvook/php-skrill-quick-checkout/downloads)](https://packagist.org/packages/zvook/php-skrill-quick-checkout)
-[![License](https://poser.pugx.org/zvook/php-skrill-quick-checkout/license)](https://packagist.org/packages/zvook/php-skrill-quick-checkout)
-
-Simple and useful PHP5 library to make payments via Skrill QuickCheckout interface
-
-Containing:
-- Payment model with each parameter description
-- Payment form generator based on payment model
-- Skrill status response model with signature verifier
 
 ### Installation
 
-Add to your composer.json
-
-```
-"require": {
-    "zvook/php-skrill-quick-checkout": "*"
+```json
+{
+  "require": {
+    "xaerobiont/php-skrill-quick-checkout": "^2"
+  }
 }
-```
-
-And run
-
-```sh
-$ composer update
 ```
 
 ### Usage
 
 ```php
-use zvook\Skrill\Models\QuickCheckout;
+use Xaerobiont\Skrill\QuickCheckout;
+use Xaerobiont\Skrill\PaymentProcessor;
 
-$quickCheckout = new QuickCheckout([
+$qc = new QuickCheckout([
     'pay_to_email' => 'mymoneybank@mail.com',
     'amount' => 100500,
     'currency' => 'EUR'
 ]);
 
-/*
-You can also use setters to bind parameters to model
-If you want to see all list of parameters just open QuickCheckout file
-Each class attribute has description
-*/
-$quickCheckout->setReturnUrl('https://my-domain.com');
-$quickCheckout->setReturnUrlTarget(QuickCheckout::URL_TARGET_BLANK);
+$qc->setReturnUrl('https://my-domain.com')
+    ->setStatusUrl('https://my-domain.com/listen-skrill')
+    ->setReturnUrlTarget(QuickCheckout::URL_TARGET_BLANK);
+// See QuickCheckout class to find complete list of parameters
+
+$api = new PaymentProcessor($q);
+$url = $api->getPaymentUrl();
+// Redirect user to this URL
 ```
 
-Build and render form
+In your status listener
 
 ```php
-use zvook\Skrill\Forms\QuickCheckoutForm;
+use Xaerobiont\Skrill\StatusResponse;
+use Xaerobiont\Skrill\SkrillException;
 
-$form = new QuickCheckoutForm($quickCheckout);
+$response = new StatusResponse($_POST, skipUndefined: true);
 
-echo $form->open([
-    'class' => 'skrill-form'
-]);
-
-/*
-By default all fields will be rendered as hidden inputs
-If you need to render some field as visible (i.e. amount of payment) you should specify it in $exclude
-Excluded fields will not be rendered at all - you should render them by yourself
-*/
-$exclude = ['amount'];
-echo $form->renderHidden($exclude);
-<input type="text" name="amount"> .....
-echo $form->renderSubmit('Pay', ['class' => 'btn']);
-echo $form->close();
-```
-
-In your status_url listener:
-
-```php
-use zvook\Skrill\Models\SkrillStatusResponse;
-use zvook\Skrill\Components\SkrillException;
-
-try {
-    $response = new SkrillStatusResponse($_POST);
-} catch (SkrillException $e) {
-    # something bad in request
+if (!$response->verifySignature('your Skrill secret word') || $response->getPayToEmail() !== 'mymoneybank@mail.com') {
+    # hm, angry hacker?
 }
 
-/*
-SkrillStatusResponse model contains attributes only for required Skrill response parameters
-To get all of them use:
-*/
-$allParams = $response->getRaw();
-
-if ($response->verifySignature('your Skrill secret word') && $response->isProcessed()) {
-    # bingo! You need to return anything with 200 OK code! Otherwise, Skrill will retry request
+switch ($response->getStatus()) {
+    case StatusResponse::STATUS_PROCESSED:
+        // Payment is done. You need to return anything with 200 http code, otherwise, Skrill will retry request
+        break;
+    case StatusResponse::STATUS_CANCELED:
+    case StatusResponse::STATUS_CHARGEBACK:
+    case StatusResponse::STATUS_PENDING:
+        // Process other statuses
+        break;
+    case StatusResponse::STATUS_FAILED:
+        // Note that you should enable receiving failure code in Skrill account
+        $errorCode = $response->getFailedReasonCode();
 }
-
-# Or:
-
-if ($response->isFailed()) {
-    # Note that you should enable receiving failure code in Skrill account before
-    # It will not provided with default settings
-    $errorCode = $response->getFailedReasonCode();
-}
-
-/*
-Also you can retrieve any Skrill response parameter and make extra validation you want.
-To see all Skrill response parameters just view SkrillStatusResponse class attributes
-For example:
-*/
-if ($response->getPayToEmail() !== 'mymoneybank@mail.com') {
-    // hum, it's very strange ...
-}
-
-/* Also you can log Skrill response data using simple built-in logger */
-$response->log('/path/to/writable/file');
 ```
 
 ### Information
 
-- Based on Skrill API version - **7.4**
+- Based on Skrill API version - **8.1**
 - [Skrill QuickCheckout documentation](https://www.skrill.com/fileadmin/content/pdf/Skrill_Quick_Checkout_Guide.pdf)
 - Skrill test merchant email: **demoqco@sun-fish.com**
-- Skrill test card numbers: VISA: **4000001234567890** | MASTERCARD: **5438311234567890** | AMEX: **371234500012340**
+- Skrill test card numbers: VISA: **4000001234567890** MASTERCARD: **5438311234567890**
