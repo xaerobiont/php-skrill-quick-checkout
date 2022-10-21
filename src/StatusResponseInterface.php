@@ -18,7 +18,7 @@ interface StatusResponseInterface
 
     public function getMbCurrency(): string;
 
-    public function getStatus(): int;
+    public function getStatus(): mixed;
 
     public function getMd5sig(): string;
 

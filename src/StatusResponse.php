@@ -51,7 +51,7 @@ class StatusResponse extends Model implements StatusResponseInterface
     /**
      * Status of the transaction
      */
-    protected int $status;
+    protected mixed $status;
 
     /**
      * MD5 signature
@@ -106,7 +106,7 @@ class StatusResponse extends Model implements StatusResponseInterface
         return $this->mb_currency;
     }
 
-    public function getStatus(): int
+    public function getStatus(): mixed
     {
         return $this->status;
     }
