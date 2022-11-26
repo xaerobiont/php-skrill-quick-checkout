@@ -7,7 +7,7 @@ namespace Xaerobiont\Skrill;
 /**
  * @see https://www.skrill.com/fileadmin/content/pdf/Skrill_Quick_Checkout_Guide.pdf
  */
-class StatusResponse extends Model implements StatusResponseInterface
+class StatusResponse extends DTO implements StatusResponseInterface
 {
     const STATUS_PROCESSED = 2;
     const STATUS_FAILED = -2;

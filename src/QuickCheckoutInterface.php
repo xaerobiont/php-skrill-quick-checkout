@@ -6,11 +6,11 @@ namespace Xaerobiont\Skrill;
 
 interface QuickCheckoutInterface
 {
-    public function toArray(bool $excludeNulls): array;
-
     public function getPayToEmail(): string;
 
     public function getAmount(): float|int;
 
     public function getCurrency(): string;
+
+    public function toArray(bool $excludeNulls): array;
 }

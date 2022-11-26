@@ -7,7 +7,7 @@ namespace Xaerobiont\Skrill;
 /**
  * @see https://www.skrill.com/fileadmin/content/pdf/Skrill_Quick_Checkout_Guide.pdf
  */
-class QuickCheckout extends Model implements QuickCheckoutInterface
+class QuickCheckout extends DTO implements QuickCheckoutInterface
 {
     const URL_TARGET_TOP = 1;
     const URL_TARGET_PARENT = 2;
